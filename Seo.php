@@ -28,11 +28,6 @@ class Seo extends Module
 	public function init(array $options)
 	{
 		$this->options = array_merge($this->options, $options);
-
-		$this->methods = [
-			'setMeta',
-			'getMeta',
-		];
 	}
 
 	/**
