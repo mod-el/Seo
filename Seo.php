@@ -18,6 +18,7 @@ class Seo extends Module
 		'full_title_pattern' => '[prefix] | [title]',
 		'og_title_pattern' => '[prefix] | [title]',
 		'title_pattern' => '[title]',
+		'twitter-cards' => null, // ['site' => '@accountname', 'type' => 'summary|summary_large_image']
 	];
 	/** @var array */
 	private $meta = [];
@@ -70,6 +71,11 @@ class Seo extends Module
 			$v = str_replace('[prefix]', $prefix, str_replace('[title]', $v, $pattern));
 		}
 
+		if ($k === 'img' and $v) {
+			if ($v{0} === '/') // If host is missing from img url, it has to be added
+				$v = ((isset($_SERVER['HTTPS']) and $_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $v;
+		}
+
 		return $v;
 	}
 
@@ -120,11 +126,12 @@ class Seo extends Module
 		$description = $this->getMeta('description');
 		$keywords = $this->getMeta('keywords');
 		$og_type = $this->getMeta('og:type');
+		$img = $this->getMeta('img');
 		?>
 		<title><?= entities($title) ?></title>
 		<meta charset="utf-8"/>
 		<meta name="robots" content="index,follow"/>
-		<meta property="og:title" content="<?= entities($og_title) ?>"/>
+		<meta property="og:title" content="<?= str_replace('"', '', $og_title) ?>"/>
 		<?php
 		if ($description) {
 			?>
@@ -141,6 +148,37 @@ class Seo extends Module
 			?>
 			<meta name="og:type" content="<?= str_replace('"', '', $og_type) ?>"/>
 			<?php
+		}
+		if ($img) {
+			?>
+			<meta name="og:image" content="<?= str_replace('"', '', $img) ?>"/>
+			<?php
+		}
+
+		if ($this->options['twitter-cards']) {
+			$twitter = array_merge([
+				'type' => 'summary',
+				'site' => null,
+			], $this->options['twitter-cards']);
+
+			if ($twitter['site']{0} != '@')
+				$twitter['site'] = '@' . $twitter['site'];
+			?>
+			<meta name="twitter:card" content="summary_large_image"/>
+			<?php
+			if ($twitter['site']) {
+				?>
+				<meta name="twitter:site" content="<?= entities($twitter['site']) ?>"/>
+				<?php
+			}
+			?>
+			<meta name="twitter:title" content="<?= str_replace('"', '', $og_title) ?>"/>
+			<meta name="twitter:description" content="<?= str_replace('"', '', $description) ?>"/>
+			<?php
+			if ($img) {
+				?>
+				<meta name="twitter:image" content="<?= $img ?>" /><?php
+			}
 		}
 	}
 }
