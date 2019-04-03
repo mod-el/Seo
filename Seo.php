@@ -94,19 +94,26 @@ class Seo extends Module
 						'img' => $element->getMainImg(),
 					];
 
-					$titleWords = ['titolo', 'title', 'nome', 'name'];
-					foreach ($titleWords as $w) {
-						if ($element[$w]) {
-							$meta['title'] = $element[$w];
-							break;
+					$customMeta = $element->getMeta();
+					$meta = array_merge($meta, $customMeta);
+
+					if (!isset($meta['title']) or !$meta['title']) {
+						$titleWords = ['titolo', 'title', 'nome', 'name'];
+						foreach ($titleWords as $w) {
+							if ($element[$w]) {
+								$meta['title'] = $element[$w];
+								break;
+							}
 						}
 					}
 
-					$descriptionWords = ['descrizione', 'description', 'testo', 'text', 'content', 'contents'];
-					foreach ($descriptionWords as $w) {
-						if ($element[$w]) {
-							$meta['description'] = textCutOff(html_entity_decode(str_replace("\n", ' ', strip_tags($element[$w])), ENT_QUOTES, 'UTF-8'), 200);
-							break;
+					if (!isset($meta['description']) or !$meta['description']) {
+						$descriptionWords = ['descrizione', 'description', 'testo', 'text', 'content', 'contents'];
+						foreach ($descriptionWords as $w) {
+							if ($element[$w]) {
+								$meta['description'] = textCutOff(html_entity_decode(str_replace("\n", ' ', strip_tags($element[$w])), ENT_QUOTES, 'UTF-8'), 200);
+								break;
+							}
 						}
 					}
 				}
@@ -127,6 +134,7 @@ class Seo extends Module
 		$keywords = $this->getMeta('keywords');
 		$og_type = $this->getMeta('og:type');
 		$img = $this->getMeta('img');
+		$canonical = $this->getMeta('canonical');
 		?>
 		<title><?= entities($title) ?></title>
 		<meta charset="utf-8"/>
@@ -152,6 +160,11 @@ class Seo extends Module
 		if ($img) {
 			?>
 			<meta name="og:image" content="<?= str_replace('"', '', $img) ?>"/>
+			<?php
+		}
+		if ($canonical) {
+			?>
+			<link rel="canonical" href="<?= str_replace('"', '', $canonical) ?>"/>
 			<?php
 		}
 
