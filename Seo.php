@@ -1,12 +1,14 @@
 <?php namespace Model\Seo;
 
-use Model\Core\Autoloader;
+use Model\Core\Globals;
 use Model\Core\Module;
 
 class Seo extends Module
 {
 	/** @var array */
 	private $elementMetaCache = null;
+	/** @var array */
+	private $generalMetaCache = null;
 
 	/** @var array */
 	private $options = [
@@ -29,6 +31,14 @@ class Seo extends Module
 	public function init(array $options)
 	{
 		$this->options = array_merge($this->options, $options);
+
+		if (!isset(Globals::$data['adminAdditionalPages']))
+			Globals::$data['adminAdditionalPages'] = [];
+		Globals::$data['adminAdditionalPages'][] = [
+			'name' => 'SEO',
+			'page' => 'ModElSeo',
+			'rule' => 'model-seo',
+		];
 	}
 
 	/**
@@ -50,7 +60,7 @@ class Seo extends Module
 		if ($lookFor === 'og:title')
 			$lookFor = 'title';
 
-		$v = $this->meta[$lookFor] ?? $this->getMetaFromElement($lookFor) ?? $this->options[$lookFor] ?? null;
+		$v = $this->meta[$lookFor] ?? $this->getMetaFromElement($lookFor) ?? $this->getGeneralMeta($lookFor) ?? $this->options[$lookFor] ?? null;
 
 		if (in_array($k, ['title', 'og:title'])) {
 			$prefix = $this->getMeta('prefix');
@@ -121,6 +131,26 @@ class Seo extends Module
 			$this->elementMetaCache = $meta;
 		}
 		return $this->elementMetaCache[$k] ?? null;
+	}
+
+	/**
+	 * @param string $k
+	 * @return string|null
+	 */
+	private function getGeneralMeta(string $k): ?string
+	{
+		if ($this->generalMetaCache === null) {
+			$this->generalMetaCache = [];
+			$check = $this->model->_Db->select('model_seo', ['controller' => $this->model->controllerName]);
+			if ($check) {
+				foreach ($check as $ck => $v) {
+					if ($ck === 'id' or $ck === 'controller' or $v === null)
+						continue;
+					$this->generalMetaCache[$ck] = $v;
+				}
+			}
+		}
+		return $this->generalMetaCache[$k] ?? null;
 	}
 
 	/**
