@@ -4,7 +4,7 @@ use Model\Core\Module_Config;
 
 class Config extends Module_Config
 {
-	public function install(array $data = []): bool
+	public function init(?array $data = null): bool
 	{
 		$this->model->_Db->query('CREATE TABLE IF NOT EXISTS `model_seo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
