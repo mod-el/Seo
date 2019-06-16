@@ -83,7 +83,7 @@ class Seo extends Module
 
 		if ($k === 'img' and $v) {
 			if ($v{0} === '/') // If host is missing from img url, it has to be added
-				$v = ((isset($_SERVER['HTTPS']) and $_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $v;
+				$v = BASE_HOST . $v;
 		}
 
 		return $v;

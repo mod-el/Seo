@@ -1,8 +1,10 @@
 {
 	"name": "Seo",
 	"description": "Seo management",
-	"version": "0.2.0",
-	"dependencies": {},
+	"version": "0.2.1",
+	"dependencies": {
+		"Core": ">=2.8.5"
+	},
 	"bind-methods": {
 		"setMeta": "setMeta",
 		"getMeta": "getMeta"
