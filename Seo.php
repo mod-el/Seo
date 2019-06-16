@@ -86,6 +86,9 @@ class Seo extends Module
 				$v = BASE_HOST . $v;
 		}
 
+		if ($k === 'canonical' and !$v)
+			$v = BASE_HOST . $this->model->getUrl();
+
 		return $v;
 	}
 
