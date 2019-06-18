@@ -187,12 +187,12 @@ class Seo extends Module
 		}
 		if ($og_type) {
 			?>
-			<meta name="og:type" content="<?= str_replace('"', '', $og_type) ?>"/>
+			<meta property="og:type" content="<?= str_replace('"', '', $og_type) ?>"/>
 			<?php
 		}
 		if ($img) {
 			?>
-			<meta name="og:image" content="<?= str_replace('"', '', $img) ?>"/>
+			<meta property="og:image" content="<?= str_replace('"', '', $img) ?>"/>
 			<?php
 		}
 		if ($canonical) {
