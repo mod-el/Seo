@@ -197,6 +197,7 @@ class Seo extends Module
 		}
 		if ($canonical) {
 			?>
+			<meta property="og:url" content="<?= str_replace('"', '', $canonical) ?>"/>
 			<link rel="canonical" href="<?= str_replace('"', '', $canonical) ?>"/>
 			<?php
 		}
