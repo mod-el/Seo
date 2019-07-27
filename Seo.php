@@ -89,14 +89,17 @@ class Seo extends Module
 		if ($k === 'canonical' and !$v)
 			$v = BASE_HOST . $this->model->getUrl();
 
+		if ($k === 'keywords' and is_array($v))
+			$v = implode(',', $v);
+
 		return $v;
 	}
 
 	/**
 	 * @param string $k
-	 * @return string
+	 * @return string|array|null
 	 */
-	private function getMetaFromElement(string $k): ?string
+	private function getMetaFromElement(string $k)
 	{
 		if ($this->elementMetaCache === null) {
 			$meta = [];
