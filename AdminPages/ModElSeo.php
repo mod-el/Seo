@@ -8,6 +8,10 @@ class ModElSeo extends AdminPage
 	{
 		return [
 			'table' => 'model_seo',
+			'privileges' => [
+				'C' => DEBUG_MODE,
+				'D' => DEBUG_MODE,
+			],
 		];
 	}
 }
