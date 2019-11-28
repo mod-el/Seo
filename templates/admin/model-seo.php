@@ -3,6 +3,16 @@ $form = $this->model->element->getForm();
 ?>
 
 <div class="flex-fields-wrap">
+	<?php
+	if (DEBUG_MODE) {
+		?>
+		<div>
+			Controller<br/>
+			<?php $form['controller']->render(); ?>
+		</div>
+		<?php
+	}
+	?>
 	<div>
 		Title<br/>
 		<?php $form['title']->render(); ?>
