@@ -13,6 +13,20 @@ class ModElSeo extends AdminPage
 				'C' => DEBUG_MODE,
 				'D' => DEBUG_MODE,
 			],
+			'order_by' => 'controller!=\'Home\', controller',
+		];
+	}
+
+	public function visualizerOptions(): array
+	{
+		return [
+			'columns' => [
+				'Pagina' => 'controller',
+				'title',
+				'description',
+				'keywords',
+				'canonical',
+			],
 		];
 	}
 
