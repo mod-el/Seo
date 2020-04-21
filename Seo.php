@@ -82,7 +82,7 @@ class Seo extends Module
 		}
 
 		if ($k === 'img' and $v) {
-			if ($v{0} === '/') // If host is missing from img url, it has to be added
+			if ($v[0] === '/') // If host is missing from img url, it has to be added
 				$v = BASE_HOST . $v;
 		}
 
@@ -211,7 +211,7 @@ class Seo extends Module
 				'site' => null,
 			], $this->options['twitter-cards']);
 
-			if ($twitter['site']{0} != '@')
+			if ($twitter['site'][0] != '@')
 				$twitter['site'] = '@' . $twitter['site'];
 			?>
 			<meta name="twitter:card" content="summary_large_image"/>
