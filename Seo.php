@@ -21,6 +21,7 @@ class Seo extends Module
 		'og_title_pattern' => '[prefix] | [title]',
 		'title_pattern' => '[title]',
 		'twitter-cards' => null, // ['site' => '@accountname', 'type' => 'summary|summary_large_image']
+		'exclude-get-from-canonical' => [],
 	];
 	/** @var array */
 	private $meta = [];
@@ -86,8 +87,20 @@ class Seo extends Module
 				$v = BASE_HOST . $v;
 		}
 
-		if ($k === 'canonical' and !$v)
-			$v = BASE_HOST . $this->model->getUrl();
+		if ($k === 'canonical' and !$v) {
+			$get = '';
+			if (count($_GET) > 1) {
+				$get = $_GET;
+
+				$exclude = $this->options['exclude-get-from-canonical'];
+				foreach ($exclude as $excluded) {
+					if (isset($get[$excluded]))
+						unset($get[$excluded]);
+				}
+				$get = '?' . http_build_query($get);
+			}
+			$v = BASE_HOST . $this->model->getUrl() . $get;
+		}
 
 		if ($k === 'keywords' and is_array($v))
 			$v = implode(',', $v);
