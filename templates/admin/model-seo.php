@@ -10,6 +10,10 @@ $form = $this->model->element->getForm();
 			Controller<br/>
 			<?php $form['controller']->render(); ?>
 		</div>
+		<div>
+			Tags<br/>
+			<?php $form['tags']->render(); ?>
+		</div>
 		<?php
 	}
 	?>

@@ -22,6 +22,7 @@ class ModElSeo extends AdminPage
 		return [
 			'columns' => [
 				'Pagina' => 'controller',
+				'tags',
 				'title',
 				'description',
 				'keywords',

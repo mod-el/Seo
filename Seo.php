@@ -25,6 +25,8 @@ class Seo extends Module
 	];
 	/** @var array */
 	private $meta = [];
+	/** @var array */
+	private $tags = [];
 
 	/**
 	 * @param array $options
@@ -153,6 +155,15 @@ class Seo extends Module
 	}
 
 	/**
+	 * @param string $tag
+	 */
+	public function addTag(string $tag)
+	{
+		if (!in_array($tag, $this->tags))
+			$this->tags[] = $tag;
+	}
+
+	/**
 	 * @param string $k
 	 * @return string|null
 	 */
@@ -160,10 +171,16 @@ class Seo extends Module
 	{
 		if ($this->generalMetaCache === null) {
 			$this->generalMetaCache = [];
-			$check = $this->model->_Db->select('model_seo', ['controller' => $this->model->controllerName]);
-			if ($check) {
-				foreach ($check as $ck => $v) {
-					if ($ck === 'id' or $ck === 'controller' or $v === null)
+			$rules = $this->model->_Db->select_all('model_seo', ['controller' => $this->model->controllerName]);
+			foreach ($rules as $rule) {
+				if (trim($rule['tags'])) {
+					$rule_tags = explode(',', trim($rule['tags']));
+					if (count(array_intersect($rule_tags, $this->tags)) === 0)
+						continue;
+				}
+
+				foreach ($rule as $ck => $v) {
+					if (in_array($ck, ['id', 'controller', 'tags']) or $v === null)
 						continue;
 					$this->generalMetaCache[$ck] = $v;
 				}
