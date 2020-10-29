@@ -1,5 +1,5 @@
 <?php
-$form = $this->model->element->getForm();
+$form = $this->model->_Admin->getForm();
 ?>
 
 <div class="flex-fields-wrap">
