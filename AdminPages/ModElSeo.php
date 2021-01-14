@@ -13,6 +13,7 @@ class ModElSeo extends AdminPage
 				'C' => DEBUG_MODE,
 				'D' => DEBUG_MODE,
 			],
+			'export' => true,
 			'order_by' => 'controller!=\'Home\', controller',
 			'fields' => [
 				'Pagina' => 'controller',
