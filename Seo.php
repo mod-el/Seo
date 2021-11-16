@@ -5,13 +5,10 @@ use Model\Core\Module;
 
 class Seo extends Module
 {
-	/** @var array */
-	private $elementMetaCache = null;
-	/** @var array */
-	private $generalMetaCache = null;
+	private array $elementMetaCache;
+	private array $generalMetaCache;
 
-	/** @var array */
-	private $options = [
+	private array $options = [
 		'prefix' => APP_NAME,
 		'title' => APP_NAME,
 		'description' => null,
@@ -23,10 +20,8 @@ class Seo extends Module
 		'twitter-cards' => null, // ['site' => '@accountname', 'type' => 'summary|summary_large_image']
 		'exclude-get-from-canonical' => [],
 	];
-	/** @var array */
-	private $meta = [];
-	/** @var array */
-	private $tags = [];
+	private array $meta = [];
+	private array $tags = [];
 
 	/**
 	 * @param array $options
@@ -116,7 +111,7 @@ class Seo extends Module
 	 */
 	private function getMetaFromElement(string $k)
 	{
-		if ($this->elementMetaCache === null) {
+		if (!isset($this->elementMetaCache)) {
 			$meta = [];
 			if ($this->model->isLoaded('ORM')) {
 				$element = $this->model->element;
@@ -169,23 +164,27 @@ class Seo extends Module
 	 */
 	private function getGeneralMeta(string $k): ?string
 	{
-		if ($this->generalMetaCache === null) {
+		if (!isset($this->generalMetaCache)) {
 			$this->generalMetaCache = [];
-			$rules = $this->model->_Db->select_all('model_seo', ['controller' => $this->model->controllerName]);
-			foreach ($rules as $rule) {
-				if (trim($rule['tags'])) {
-					$rule_tags = explode(',', trim($rule['tags']));
-					if (count(array_intersect($rule_tags, $this->tags)) === 0)
-						continue;
-				}
 
-				foreach ($rule as $ck => $v) {
-					if (in_array($ck, ['id', 'controller', 'tags']) or $v === null)
-						continue;
-					$this->generalMetaCache[$ck] = $v;
+			if ($this->model->moduleExists('Db')) {
+				$rules = $this->model->_Db->select_all('model_seo', ['controller' => $this->model->controllerName]);
+				foreach ($rules as $rule) {
+					if (trim($rule['tags'])) {
+						$rule_tags = explode(',', trim($rule['tags']));
+						if (count(array_intersect($rule_tags, $this->tags)) === 0)
+							continue;
+					}
+
+					foreach ($rule as $ck => $v) {
+						if (in_array($ck, ['id', 'controller', 'tags']) or $v === null)
+							continue;
+						$this->generalMetaCache[$ck] = $v;
+					}
 				}
 			}
 		}
+
 		return $this->generalMetaCache[$k] ?? null;
 	}
 
