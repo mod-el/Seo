@@ -15,7 +15,7 @@ class Seo extends Module
 		'keywords' => null,
 		'og:type' => 'website',
 		'full_title_pattern' => '[prefix] | [title]',
-		'og_title_pattern' => '[prefix] | [title]',
+		'og_title_pattern' => null,
 		'title_pattern' => '[title]',
 		'twitter-cards' => null, // ['site' => '@accountname', 'type' => 'summary|summary_large_image']
 		'exclude-get-from-canonical' => [],
@@ -71,7 +71,7 @@ class Seo extends Module
 						$pattern = $this->getMeta('full_title_pattern');
 						break;
 					case 'og:title':
-						$pattern = $this->getMeta('og_title_pattern');
+						$pattern = $this->getMeta('og_title_pattern') ?: $this->getMeta('full_title_pattern');
 						break;
 				}
 			}
