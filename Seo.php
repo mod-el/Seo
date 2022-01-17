@@ -170,7 +170,7 @@ class Seo extends Module
 			if ($this->model->moduleExists('Db')) {
 				$rules = $this->model->_Db->select_all('model_seo', ['controller' => $this->model->controllerName]);
 				foreach ($rules as $rule) {
-					if (trim($rule['tags'])) {
+					if (trim($rule['tags'] ?: '')) {
 						$rule_tags = explode(',', trim($rule['tags']));
 						if (count(array_intersect($rule_tags, $this->tags)) === 0)
 							continue;
