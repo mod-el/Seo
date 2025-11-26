@@ -9,16 +9,16 @@ class Seo extends Module
 	private array $generalMetaCache;
 
 	private array $options = [
-		'prefix' => APP_NAME,
-		'title' => APP_NAME,
-		'description' => null,
-		'keywords' => null,
-		'og:type' => 'website',
-		'full_title_pattern' => '[prefix] | [title]',
-		'og_title_pattern' => null,
-		'title_pattern' => '[title]',
-		'twitter-cards' => null, // ['site' => '@accountname', 'type' => 'summary|summary_large_image']
-		'exclude-get-from-canonical' => [],
+			'prefix' => APP_NAME,
+			'title' => APP_NAME,
+			'description' => null,
+			'keywords' => null,
+			'og:type' => 'website',
+			'full_title_pattern' => '[prefix] | [title]',
+			'og_title_pattern' => null,
+			'title_pattern' => '[title]',
+			'twitter-cards' => null, // ['site' => '@accountname', 'type' => 'summary|summary_large_image']
+			'exclude-get-from-canonical' => [],
 	];
 	private array $meta = [];
 	private array $tags = [];
@@ -33,9 +33,9 @@ class Seo extends Module
 		if (!isset(Globals::$data['adminAdditionalPages']))
 			Globals::$data['adminAdditionalPages'] = [];
 		Globals::$data['adminAdditionalPages'][] = [
-			'name' => 'SEO',
-			'page' => 'ModElSeo',
-			'rule' => 'model-seo',
+				'name' => 'SEO',
+				'page' => 'ModElSeo',
+				'rule' => 'model-seo',
 		];
 	}
 
@@ -117,7 +117,7 @@ class Seo extends Module
 				$element = $this->model->element;
 				if ($element) {
 					$meta = [
-						'img' => $element->getMainImg(),
+							'img' => $element->getMainImg(),
 					];
 
 					$customMeta = $element->getMeta();
@@ -167,8 +167,9 @@ class Seo extends Module
 		if (!isset($this->generalMetaCache)) {
 			$this->generalMetaCache = [];
 
-			if ($this->model->moduleExists('Db')) {
-				$rules = $this->model->_Db->select_all('model_seo', ['controller' => $this->model->controllerName]);
+			if (class_exists('\\Model\\Db\\Db')) {
+				$db = \Model\Db\Db::getConnection();
+				$rules = $db->selectAll('model_seo', ['controller' => $this->model->controllerName]);
 				foreach ($rules as $rule) {
 					if (trim($rule['tags'] ?: '')) {
 						$rule_tags = explode(',', trim($rule['tags']));
@@ -236,8 +237,8 @@ class Seo extends Module
 
 		if ($this->options['twitter-cards']) {
 			$twitter = array_merge([
-				'type' => 'summary',
-				'site' => null,
+					'type' => 'summary',
+					'site' => null,
 			], $this->options['twitter-cards']);
 
 			if ($twitter['site'][0] != '@')
