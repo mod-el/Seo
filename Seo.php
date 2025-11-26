@@ -43,7 +43,7 @@ class Seo extends Module
 	 * @param string $k
 	 * @param null|string $v
 	 */
-	public function setMeta(string $k, ?string $v)
+	public function setMeta(string $k, ?string $v): void
 	{
 		$this->meta[$k] = $v;
 	}
@@ -152,7 +152,7 @@ class Seo extends Module
 	/**
 	 * @param string $tag
 	 */
-	public function addTag(string $tag)
+	public function addTag(string $tag): void
 	{
 		if (!in_array($tag, $this->tags))
 			$this->tags[] = $tag;
@@ -191,7 +191,7 @@ class Seo extends Module
 	/**
 	 *
 	 */
-	public function headings()
+	public function headings(): void
 	{
 		$title = $this->getMeta('title');
 		$og_title = $this->getMeta('og:title');
