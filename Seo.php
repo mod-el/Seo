@@ -201,10 +201,11 @@ class Seo extends Module
 		$og_type = $this->getMeta('og:type');
 		$img = $this->getMeta('img');
 		$canonical = $this->getMeta('canonical');
+		$index = $this->getMeta('index');
 		?>
 		<title><?= entities($title) ?></title>
 		<meta charset="utf-8"/>
-		<meta name="robots" content="index,follow"/>
+		<meta name="robots" content="<?= entities($index ?? 'index,follow') ?>"/>
 		<meta property="og:title" content="<?= str_replace('"', '', $og_title) ?>"/>
 		<?php
 		if ($description) {
