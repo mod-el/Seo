@@ -84,19 +84,21 @@ class Seo extends Module
 				$v = BASE_HOST . $v;
 		}
 
-		if ($k === 'canonical' and !$v) {
-			$get = '';
+		if ($k === 'canonical') {
+			if (!$v)
+				$v = BASE_HOST . $this->model->getUrl();
+
 			if (count($_GET) > 1) {
 				$get = $_GET;
-
 				$exclude = $this->options['exclude-get-from-canonical'];
 				foreach ($exclude as $excluded) {
 					if (isset($get[$excluded]))
 						unset($get[$excluded]);
 				}
-				$get = '?' . http_build_query($get);
+
+				if ($get)
+					$v .= '?' . http_build_query($get);
 			}
-			$v = BASE_HOST . $this->model->getUrl() . $get;
 		}
 
 		if ($k === 'keywords' and is_array($v))
