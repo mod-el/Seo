@@ -1,6 +1,5 @@
 <?php namespace Model\Seo;
 
-use Model\Core\Globals;
 use Model\Core\Module;
 
 class Seo extends Module
@@ -29,14 +28,6 @@ class Seo extends Module
 	public function init(array $options)
 	{
 		$this->options = array_merge($this->options, $options);
-
-		if (!isset(Globals::$data['adminAdditionalPages']))
-			Globals::$data['adminAdditionalPages'] = [];
-		Globals::$data['adminAdditionalPages'][] = [
-				'name' => 'SEO',
-				'page' => 'ModElSeo',
-				'rule' => 'model-seo',
-		];
 	}
 
 	/**
